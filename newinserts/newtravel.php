@@ -9,18 +9,34 @@ require_once("../includes/aplicacion.php");
 		$destino= $_POST['destino'];
 		$precio= $_POST['precio'];
 		$asiento= $_POST['asientos'];
-		$aerolinea= "IB";
+
+		//Conexión con la base de datos
+		$app = Aplicacion::getInstance();
+		$conn = $app->conexionBD();
+
+		//Selecciona el nombre del aeropuerto
+		$airline = sprintf("SELECT *
+							FROM airline a
+							JOIN pilot p
+							WHERE p.user_id = '%d'
+							AND p.belongs_airline = a.airline_acr",
+							$conn->real_escape_string($_SESSION['ID']));
+		$aero = $conn->query($airline);
+		$empresa = $aero->fetch_assoc();
+
+		$aerolinea= $empresa['airline_acr'];
 		
 		if(!empty($origen) && !empty($destino) && !empty($precio) && !empty($asiento) && !empty($aerolinea)){
 			$app = Aplicacion::getInstance();
 			$conn = $app->conexionBD();
 
-			$query = sprintf("INSERT INTO available_trip(price, acr_ori, acr_dst, sits, airline_acr) VALUES ('%F', '%s', '%s', '%d', '%s')", 
-					$conn->real_escape_string($precio),
-					$conn->real_escape_string($origen),
-					$conn->real_escape_string($destino),
-					$conn->real_escape_string($asiento),
-					$conn->real_escape_string($aerolinea));
+			$query = sprintf("INSERT INTO available_trip(price, acr_ori, acr_dst, sits, airline_acr) 
+							VALUES ('%F', '%s', '%s', '%d', '%s')", 
+							$conn->real_escape_string($precio),
+							$conn->real_escape_string($origen),
+							$conn->real_escape_string($destino),
+							$conn->real_escape_string($asiento),
+							$conn->real_escape_string($aerolinea));
 			$conn = $conn->query($query);
 		}
 	}

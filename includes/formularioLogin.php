@@ -61,6 +61,7 @@ class formularioLogin extends Form{
                     $_SESSION['login'] = true;
                     $_SESSION['nombre'] = $username;
                     $_SESSION['esPiloto'] = false;
+                    $_SESSION['ID'] = $usuario->id();
 
 
 
@@ -79,7 +80,7 @@ class formularioLogin extends Form{
                          $_SESSION['esPiloto'] = true;
                      }
                     //header('Location: index.php');
-                    return "index.php?patata=".$_SESSION['esPiloto'];
+                    return "index.php?user=".$_SESSION['esPiloto'];
 
                 } else {
                     $erroresFormulario[] = "El usuario o el password no coinciden";

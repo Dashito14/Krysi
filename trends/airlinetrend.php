@@ -8,9 +8,9 @@
 	$app = Aplicacion::getInstance();
 	$conn = $app->conexionBD();
 	//Coge 10 elementos de la tabla "ticket" ordenado por la cantidad de billetes que tiene un usuario, de mayor a menor
-	$query = sprintf("SELECT DISTINCT acr_ori, count(travel_id) as total
+	$query = sprintf("SELECT DISTINCT airline_acr, count(travel_id) as total
 						FROM available_trip 
-						GROUP BY acr_ori 
+						GROUP BY airline_acr 
 						ORDER BY count(travel_id) 
 						DESC LIMIT 10");
 	$rs = $conn->query($query);
@@ -22,7 +22,7 @@
 	<head>
 		<link rel="stylesheet" type="text/css" href="../assets/css/estilo.css" />
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title>Aeropuertos populares</title>
+		<title>Aerolíneas populares</title>
 	</head>
 
 	<body>
@@ -37,13 +37,13 @@
 				?>	
 
 				<div class="main">
-					<h1>AEROPUERTOS CON MÁS VIAJES</h1>
-						<p>En este ránking están ordenados los aeropuertos con más viajes disponibles.</p>
+					<h1>AEROLÍNEAS CON MÁS VIAJES</h1>
+						<p>En este ránking están ordenados las aerolíneas con más viajes disponibles.</p>
 						<!-- Inicio de la tabla que mostrará los usuarios y el número de viajes -->
 						<table>
 							<thead>
 								<tr>
-									<th>Aeropuerto</th>
+									<th>Aerolínea</th>
 									<th>Número de viajes</th>
 								</tr>
 							</thead>
@@ -61,9 +61,9 @@
 
 										//Selecciona el nombre del usuario
 										$select = sprintf("SELECT *
-														FROM airport
-														WHERE acronym = '%s'",
-													$conn->real_escape_string($ranking['acr_ori']));
+														FROM airline
+														WHERE airline_acr = '%s'",
+													$conn->real_escape_string($ranking['airline_acr']));
 										$usuario = $conn->query($select);
 										$nombre = $usuario->fetch_assoc();
 									?>

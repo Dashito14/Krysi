@@ -177,35 +177,6 @@ ALTER TABLE pilot
 	
 	
 /*---------------------------------------------------------------------------*/
-/*-----------------------TABLA USUARIO CORRIENTE-----------------------------*/
-/*---------------------------------------------------------------------------*/
-
-
-/*Esta tabla es una de las dos partes de la relación "Is a" derivadas de la tabla
-usuario, dividos en Pilotos y usuarios corrientes, los pilotos tendrán más 
-privilegios dentro de la web*/
-
-
-/*Creación de la tabla, el campo pending nos dirá si tiene algún viaje pendiente*/
-CREATE TABLE normal_user (
-	user_id int(32) NOT NULL,
-	pending boolean
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-/*Adición índice para la clave foránea de "user_id"*/
-ALTER TABLE normal_user
-	ADD KEY userid (user_id);
-	
-
-/*Creación de la relación de la clave foránea, "user_id" que referencia "user_id" de 
-la tabla "users"*/
-ALTER TABLE normal_user
-	ADD CONSTRAINT normal_user_ibfk_1 FOREIGN KEY (user_id) REFERENCES users (user_id);		
-	
-	
-	
-/*---------------------------------------------------------------------------*/
 /*--------------------------TABLA VIAJES DISPONIBLES-------------------------*/
 /*---------------------------------------------------------------------------*/
 
@@ -256,14 +227,13 @@ ALTER TABLE available_trip
 /*Tabla con todos los billetes que se han gestionado a través de la web, se podrán
 comprar nuevos billetes, realizaremos un insert, se podrá pedir la devolución de un 
 billete, por lo que haremos un delete. En la tabla "ticket" necesitamos almacenar
-el identificador del usuario que lo ha comprado, la fecha de compra, y el identificador 
+el identificador del usuario que lo ha comprado y el identificador 
 del billete*/
 
 
 /*Creación de la tabla*/
 CREATE TABLE ticket (
   user_id int(32) NOT NULL,
-  purchase_date date NOT NULL,
   ava_trip_id int(32) NOT NULL,
   ticket_id int(32) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -286,7 +256,7 @@ ALTER TABLE ticket
 
 /*El campo "user_id" que referencia al del mismo nombre de la tabla "users"*/
 ALTER TABLE ticket
-	ADD CONSTRAINT ticket_ibfk_1 FOREIGN KEY (ava_trip_id) REFERENCES available_trip (travel_id),
+	ADD CONSTRAINT ticket_ibfk_1 FOREIGN KEY (ava_trip_id) REFERENCES available_trip (travel_id) ON DELETE CASCADE,
 	ADD CONSTRAINT ticket_ibfk_2 FOREIGN KEY (user_id) REFERENCES users (user_id);
 
 /*Se cierra la transacción*/  

@@ -9,9 +9,8 @@
 					echo "<a href='../trends/trend.php' class='login'>Más populares</a>";
 					echo "<a href='../deletes/delete.php' class='login'>Eliminar</a>";		
 				}	else{
-				echo "<a href='../search.php' class='sidebar'>Buscar</a>";
+				echo "<a href='../search.php' class='sidebar'>Buscar Viaje</a>";
 				echo "<a href='../trends/trend.php' class='login'>Más populares</a>";
-				echo "<a href='../buy.php' class='login'>Más populares</a>";
 				}
 		}
 	}

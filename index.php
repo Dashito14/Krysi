@@ -23,7 +23,7 @@ require_once("includes/config.php");
 	<?php require("includes/comun/sidebarIzq.php");?>
 
 	<div id="contenido">
-		<h1>Página principal</h1>
+		<h1 align="center">Bienvendi@ a Krysi</h1>
 		<p> Aquí está el contenido público, visible para todos los usuarios. </p>
 	</div>
 

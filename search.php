@@ -49,9 +49,16 @@ require_once("includes/aplicacion.php");
 			<div class="row">
 				<h1>Buscar nuevo viaje</h1>
 			</div>
-			<div class="row">
-				<a href="">Nuevo Registro</a>
+			<?php
+				if($_SESSION['esPiloto']){
+			?>
+			<div class="nuevoregistro">
+				<a href="../newinserts/newtravel.php">Nuevo Registro</a>
 			</div>		
+
+			<?php
+		}
+			?>
 
 			<br>
 
@@ -64,30 +71,82 @@ require_once("includes/aplicacion.php");
 						<th>Precio</th>
 						<th>Asientos</th>
 						<th>Aerolínea</th>
-						<th></th>
-						<th></th>
+						<th>Comprar</th>
+						<th>Editar</th>
+						<th>Eliminar</th>
 				</thead>
 
 				<tbody>
 					<?php while($row = $resultado->fetch_assoc()){
 						?>
 					<tr>
-						<td><?php echo $row['acr_ori']; ?></td>
-						<td><?php echo $row['acr_dst']; ?></td>
+						<?php
+							//Conexión con la base de datos
+							$app = Aplicacion::getInstance();
+							$conn = $app->conexionBD();
+
+							//Selecciona el nombre del aeropuerto
+							$select = sprintf("SELECT * 
+											FROM airport
+											WHERE acronym = '%s'",
+										$conn->real_escape_string($row['acr_ori']));
+							$aeropuerto = $conn->query($select);
+							$nombre = $aeropuerto->fetch_assoc();
+						?>
+
+						<td><?php echo $nombre['name']; ?></td>
+
+						<?php
+							//Conexión con la base de datos
+							$app = Aplicacion::getInstance();
+							$conn = $app->conexionBD();
+
+							//Selecciona el nombre del aeropuerto
+							$select = sprintf("SELECT * 
+											FROM airport
+											WHERE acronym = '%s'",
+										$conn->real_escape_string($row['acr_dst']));
+							$aeropuerto = $conn->query($select);
+							$destino = $aeropuerto->fetch_assoc();
+						?>
+						<td><?php echo $destino['name']; ?></td>
 						<td><?php echo $row['price']; ?></td>
 						<td><?php echo $row['sits']; ?></td>
-						<td><?php echo $row['airline_acr']; ?></td>
-						<td><a href="comprar.php?id=<?php echo $row['travel_id']; ?>"></a></td>
+
+						<?php
+							//Conexión con la base de datos
+							$app = Aplicacion::getInstance();
+							$conn = $app->conexionBD();
+
+							//Selecciona el nombre de la aerolínea
+							$select = sprintf("SELECT * 
+											FROM airline
+											WHERE airline_acr = '%s'",
+										$conn->real_escape_string($row['airline_acr']));
+							$aeropuerto = $conn->query($select);
+							$airline = $aeropuerto->fetch_assoc();
+						?>
+
+						<td><?php echo $airline['name']; ?></td>
+						<td><a href="../buy.php?id=<?php echo $row['travel_id']; ?>">Comprar</a></td>
+						<?php
+						if($_SESSION['esPiloto']){
+						?>
+						<td><a href="../updateTravel.php?id=<?php echo $row['travel_id']; ?>">Editar</a></td>
+						<td><a href="../deleteTravel.php?id=<?php echo $row['travel_id']; ?>">Eliminar</a></td>
+						<?php
+					}
+					?>
 					</tr>
 					<?php
 						}
 					?>
 				</tbody>
 			</table>	
-					<form action="<?php $_SERVER['PHP_SELF']; ?>" method="POST">
+					<!-- <form action="<?php /*$_SERVER['PHP_SELF'];*/ ?>" method="POST">
 						<b>Ciudad Origen: </b><input type="text" id="campo" name="campo" />
 						<input type="submit" id="enviar" name="enviar" value="Buscar" />
-					</form>
+					</form> -->
 			</div>
 		</div>
 

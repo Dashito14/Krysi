@@ -3,13 +3,36 @@
 //Inicio del procesamiento
 require_once("includes/config.php");
 require_once("includes/aplicacion.php");
-require_once("includes/usuario.php")
+require_once("includes/usuario.php");
 
-/*
-	$app = Aplicacion::getInstance();
-	$conn = $app->conexionBD();
-	
-	*/
+if(!empty($_POST)){
+		$origen= $_POST['origen'];
+		$destino= $_POST['destino'];
+		$precio= $_POST['precio'];
+		$asiento= $_POST['asientos'];
+
+		//Conexión con la base de datos
+		$app = Aplicacion::getInstance();
+		$conn = $app->conexionBD();
+		
+		if(!empty($origen) && !empty($destino) && !empty($precio) && !empty($asiento)){
+			$app = Aplicacion::getInstance();
+			$conn = $app->conexionBD();
+
+			$query = sprintf("UPDATE available_trip
+							SET price = '%F',
+							acr_ori = '%s',
+							acr_dst = '%s',
+							sits = '%d'
+							WHERE travel_id = '%d'", 
+							$conn->real_escape_string($precio),
+							$conn->real_escape_string($origen),
+							$conn->real_escape_string($destino),
+							$conn->real_escape_string($asiento),
+							$conn->real_escape_string($_GET['id']));
+			$conn = $conn->query($query);
+		}
+	}
 ?>
 
 <!DOCTYPE html>
@@ -17,7 +40,7 @@ require_once("includes/usuario.php")
 <head>
 <link rel="stylesheet" type="text/css" href="../assets/css/estilo.css" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Buscar viaje</title>
+<title>Editar viaje</title>
 </head>
 
 <body>
@@ -33,8 +56,8 @@ require_once("includes/usuario.php")
 		require("includes/comun/sidebarIzq.php");
 	?>
 		<div class="main">
-		<h1>COMPRA REALIZADA CON ÉXITO</h1>
-		<p>El billete que has comprado tiene estos datos: </p>
+		<h1>EDITAR VIAJE</h1>
+		<p>El billete que vas a editar tienes estos datos: </p>
 		<?php
 			if(isset($_GET['id'])){
 				$app = Aplicacion::getInstance();
@@ -50,9 +73,8 @@ require_once("includes/usuario.php")
 							<thead>
 								<tr>
 									<th>Aeropuerto Origen</th>
-									<th>Ciudad Origen</th><br>
 									<th>Aeropuerto Destino</th>
-									<th>Ciudad Destino</th>
+									<th>Asientos</th>
 									<th>Precio</th>
 									<th>Aerolínea</th>
 								</tr>
@@ -62,6 +84,7 @@ require_once("includes/usuario.php")
 								<?php 
 									//Bucle que mostrará los 10 países con más ciudades
 									while($row = $rs->fetch_assoc()){
+										$acraero = $row['airline_acr'];
 								?>
 								<tr>
 									<?php
@@ -78,23 +101,7 @@ require_once("includes/usuario.php")
 							$destino = $aeropuerto->fetch_assoc();
 							?>
 									<td align="center"><?php echo $destino['name']; ?></td>
-							<?php
-
-										//Conexión con la base de datos
-							$app = Aplicacion::getInstance();
-							$conn = $app->conexionBD();
-
-							//Selecciona el nombre del aeropuerto
-							$cityori = sprintf("SELECT c.name 
-											FROM city c
-											JOIN airport a
-											WHERE c.city_id = a.city_id
-											AND a.acronym = '%s'",
-										$conn->real_escape_string($row['acr_ori']));
-							$ciudadorigen = $conn->query($cityori);
-							$corigen = $ciudadorigen->fetch_assoc();
-							?>
-									<td align="center"><?php echo $corigen['name']; ?></td>
+		
 									<?php
 										//Conexión con la base de datos
 							$app = Aplicacion::getInstance();
@@ -109,24 +116,7 @@ require_once("includes/usuario.php")
 							$origen = $ori->fetch_assoc();
 							?>
 									<td align="center"><?php echo $origen['name']; ?></td>
-
-									<?php
-
-										//Conexión con la base de datos
-							$app = Aplicacion::getInstance();
-							$conn = $app->conexionBD();
-
-							//Selecciona el nombre del aeropuerto
-							$citydst = sprintf("SELECT c.name
-											FROM city c
-											JOIN airport a
-											WHERE c.city_id = a.city_id
-											AND a.acronym = '%s'",
-										$conn->real_escape_string($row['acr_dst']));
-							$ciudaddestino = $conn->query($citydst);
-							$codestino = $ciudaddestino->fetch_assoc();
-							?>
-									<td align="center"><?php echo $codestino['name']; ?></td>
+									<td align="center"><?php echo $row['sits']; ?></td>
 									<td align="center"><?php echo $row['price']; ?></td>
 									<?php
 
@@ -149,23 +139,41 @@ require_once("includes/usuario.php")
 								?>
 							</tbody>
 						</table> 
+						<form class="insertar" action="<?php $_SERVER['PHP_SELF']; ?>" method="POST">
 		<?php
-			if(isset($_GET['id'])){
-				$id= $_GET['id'];
-				$idUser = $_SESSION['ID'];
-			
-			if(!empty($id) && !empty($idUser)){
-					$app = Aplicacion::getInstance();
-					$conn = $app->conexionBD();
-					$query = sprintf("INSERT INTO ticket(user_id, ava_trip_id)
-										VALUES ('%d', '%d')",
-									$conn->real_escape_string($idUser),
-									$conn->real_escape_string($id));
-						$rs = $conn->query($query);
-		}
-	}
+		$aero = sprintf("SELECT * FROM pilot WHERE user_id = '%d'", $conn->real_escape_string($_SESSION['ID']));
+		$a = $conn->query($aero);
+		$aerolineapiloto = $a->fetch_assoc();
+			if($aerolineapiloto['belongs_airline'] == $acraero){
+			$app = Aplicacion::getInstance();
+			$conn = $app->conexionBD();
+			$query = sprintf("SELECT name, acronym FROM airport ORDER BY name");
+			$resultado = $conn->query($query);
 
+	?>			
+				<h2>Elige los nuevos datos</h2>
+				<b>Aeropuerto origen: </b><select name="origen" id="">
+   										 	<?php foreach ($resultado as $r): ?>
+       									 	<option value=<?php echo $r['acronym']; ?>><?php echo $r['name']; ?></option>
+    										<?php endforeach; ?>
+										</select>
+				<b>Aeropuerto destino: </b><select name="destino" id="aeropuerto">
+   										 	<?php foreach ($resultado as $r): ?>
+       									 	<option value=<?php echo $r['acronym']; ?>><?php echo $r['name']; ?></option>
+    										<?php endforeach; ?>
+										</select>
+				<b>Precio en euros: </b><input type="number" min="1.00" step="0.01" class="campo" name="precio" />
+				<b>Asientos disponibles: </b><input type="number" min="1" class="campo" name="asientos" />
+				<input type="submit" id="enviar" name="enviar" value="Insertar" />
+				</form>
+				<?php
+			} else{
+				echo "No puedes editar este viaje porque pertenece a ".$acraero." y usted trabaja en ".$aerolineapiloto['belongs_airline'];
+			}
+		
 		?>
+	
+
 		</div>
 
 	</div>
