@@ -1,38 +1,7 @@
 <?php
-// TODO COPIADO DEL SEARCH.PHP
-//Inicio del procesamiento
-require_once("includes/config.php");
 require_once("includes/aplicacion.php");
-require_once("includes/usuario.php");
-
-if(!empty($_POST)){
-		$origen= $_POST['origen'];
-		$destino= $_POST['destino'];
-		$precio= $_POST['precio'];
-		$asiento= $_POST['asientos'];
-
-		//Conexión con la base de datos
-		$app = Aplicacion::getInstance();
-		$conn = $app->conexionBD();
-		
-		if(!empty($origen) && !empty($destino) && !empty($precio) && !empty($asiento)){
-			$app = Aplicacion::getInstance();
-			$conn = $app->conexionBD();
-
-			$query = sprintf("UPDATE available_trip
-							SET price = '%F',
-							acr_ori = '%s',
-							acr_dst = '%s',
-							sits = '%d'
-							WHERE travel_id = '%d'", 
-							$conn->real_escape_string($precio),
-							$conn->real_escape_string($origen),
-							$conn->real_escape_string($destino),
-							$conn->real_escape_string($asiento),
-							$conn->real_escape_string($_GET['id']));
-			$conn = $conn->query($query);
-		}
-	}
+require_once("includes/formularioUpdate.php");
+require_once("includes/config.php");
 ?>
 
 <!DOCTYPE html>
@@ -67,6 +36,7 @@ if(!empty($_POST)){
 									WHERE travel_id = '%d'",
 									$conn->real_escape_string($_GET['id']));
 				$rs = $conn->query($query);
+
 			}
 		?>
 		<table>
@@ -82,6 +52,7 @@ if(!empty($_POST)){
 
 							<tbody>
 								<?php 
+
 									//Bucle que mostrará los 10 países con más ciudades
 									while($row = $rs->fetch_assoc()){
 										$acraero = $row['airline_acr'];
@@ -139,41 +110,12 @@ if(!empty($_POST)){
 								?>
 							</tbody>
 						</table> 
-						<form class="insertar" action="<?php $_SERVER['PHP_SELF']; ?>" method="POST">
-		<?php
-		$aero = sprintf("SELECT * FROM pilot WHERE user_id = '%d'", $conn->real_escape_string($_SESSION['ID']));
-		$a = $conn->query($aero);
-		$aerolineapiloto = $a->fetch_assoc();
-			if($aerolineapiloto['belongs_airline'] == $acraero){
-			$app = Aplicacion::getInstance();
-			$conn = $app->conexionBD();
-			$query = sprintf("SELECT name, acronym FROM airport ORDER BY name");
-			$resultado = $conn->query($query);
+						<h2>Actualizar datos</h2>
+					<?php
 
-	?>			
-				<h2>Elige los nuevos datos</h2>
-				<b>Aeropuerto origen: </b><select name="origen" id="">
-   										 	<?php foreach ($resultado as $r): ?>
-       									 	<option value=<?php echo $r['acronym']; ?>><?php echo $r['name']; ?></option>
-    										<?php endforeach; ?>
-										</select>
-				<b>Aeropuerto destino: </b><select name="destino" id="aeropuerto">
-   										 	<?php foreach ($resultado as $r): ?>
-       									 	<option value=<?php echo $r['acronym']; ?>><?php echo $r['name']; ?></option>
-    										<?php endforeach; ?>
-										</select>
-				<b>Precio en euros: </b><input type="number" min="1.00" step="0.01" class="campo" name="precio" />
-				<b>Asientos disponibles: </b><input type="number" min="1" class="campo" name="asientos" />
-				<input type="submit" id="enviar" name="enviar" value="Insertar" />
-				</form>
-				<?php
-			} else{
-				echo "No puedes editar este viaje porque pertenece a ".$acraero." y usted trabaja en ".$aerolineapiloto['belongs_airline'];
-			}
-		
-		?>
-	
-
+						$formularioUpdate = new formularioUpdate("Actualizar", array('action'=>'updateTravel.php?id='.$_GET['id']));
+						$formularioUpdate->gestiona();
+					?>
 		</div>
 
 	</div>
