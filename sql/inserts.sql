@@ -1,13 +1,11 @@
-/*Países disponibles en los cuáles se podrá añadir aeropuertos dentro de nuestra web,
-dentro de la web se podrán agregar nuevos países*/
-INSERT INTO country (name, n_cities) VALUES
+﻿INSERT INTO country (name, n_cities) VALUES
 ('Spain', 6), /*id= 1*/
 ('Austria', 1), /*id= 2*/
 ('Italy', 1), /*id= 3*/
 ('Arabe Emirates', 1), /*id= 4*/
 ('Serbia', 1), /*id= 5*/
 ('United Kingdom', 1), /*id= 6*/
-('United States', 2), /*id= 7*/
+('United States', 1), /*id= 7*/
 ('Czech Republic', 1), /*id= 8*/
 ('France', 1), /*id= 9*/
 ('Portugal', 0), /*id= 10*/
@@ -15,7 +13,8 @@ INSERT INTO country (name, n_cities) VALUES
 ('Bielorrusia', 1), /*id= 12*/
 ('Egypt', 1), /*id= 13*/
 ('Cuba', 1); /*id= 14*/
-
+-- Paises disponibles en los cuáles se podrá añadir aeropuertos dentro de nuestra web,
+-- dentro de la web se podrán agregar nuevos países
 
 
 /*Se han añadido algunos valores por defecto, más adelante en la web se podrán

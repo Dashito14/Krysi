@@ -133,7 +133,7 @@ require_once("includes/aplicacion.php");
 						if($_SESSION['esPiloto']){
 						?>
 						<td><a href="../updateTravel.php?id=<?php echo $row['travel_id']; ?>">Editar</a></td>
-						<td><a href="../deleteTravel.php?id=<?php echo $row['travel_id']; ?>">Eliminar</a></td>
+						<td><a href="../deletes/deleteTravel.php?id=<?php echo $row['travel_id']; ?>">Eliminar</a></td>
 						<?php
 					}
 					?>

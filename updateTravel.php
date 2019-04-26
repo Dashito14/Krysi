@@ -116,16 +116,12 @@ require_once("includes/config.php");
 						$formularioUpdate = new formularioUpdate("Actualizar", array('action'=>'updateTravel.php?id='.$_GET['id']));
 						$formularioUpdate->gestiona();
 					?>
-		</div>
-
 	</div>
-
-<?php
-	require("includes/comun/pie.php");
-?>
-
-
+		
+	</div>
+	<?php
+				require("includes/comun/pie.php");
+			?>
 </div>
-
-</body>
-</html>
+	</body>
+	</html>

@@ -136,7 +136,11 @@
 				</tbody>
 			</table>	
 		</div>
+		
 	</div>
+	<?php
+				require("includes/comun/pie.php");
+			?>
 </div>
 	</body>
 	</html>

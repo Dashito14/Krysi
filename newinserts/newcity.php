@@ -20,6 +20,29 @@
 							$conn->real_escape_string($nombre),
 							$conn->real_escape_string($pais));
 			$conn = $conn->query($query);
+
+			$app = Aplicacion::getInstance();
+				$conn = $app->conexionBD();
+				$query = sprintf("SELECT * 
+									FROM country
+									WHERE country_id = '%d'",
+									$conn->real_escape_string($pais));
+				$rs = $conn->query($query);
+				$row = $rs->fetch_assoc();
+				$cities = $row['n_cities'];
+				$cities = $cities + 1;
+
+				echo $cities;
+				echo $pais;
+				
+			$app = Aplicacion::getInstance();
+			$conn = $app->conexionBD();
+			$query = sprintf("UPDATE country 
+								SET n_cities = '%d',
+								WHERE country_id = '%d'", 
+							$conn->real_escape_string($cities),
+							$conn->real_escape_string($pais));
+			$conn = $conn->query($query);
 		} //Cierre if(!empty($_POST))
 	} //Cierre if(!empty($pais) && !empty($nombre))
 	

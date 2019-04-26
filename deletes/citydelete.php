@@ -40,11 +40,37 @@
 								$ciudad= $_POST['city'];
 
 								if(!empty($ciudad)){
+									$app = Aplicacion::getInstance();
+				$conn = $app->conexionBD();
+				$query = sprintf("SELECT * 
+									FROM country c 
+									JOIN city ci
+									WHERE c.country_id = ci.country_id
+									AND ci.city_id = '%d'",
+									$conn->real_escape_string($ciudad));
+				$rs = $conn->query($query);
+				$row = $rs->fetch_assoc();
+				$cities = $row['n_cities'];
+				$cities = $cities - 1;
+				$pais = $row['country_id'];
+
+							$app = Aplicacion::getInstance();
+			$conn = $app->conexionBD();
+			$query = sprintf("UPDATE country 
+								SET n_cities = '%d',
+								WHERE country_id = '%d'", 
+							$conn->real_escape_string($cities),
+							$conn->real_escape_string($pais));
+			$conn = $conn->query($query);		
+$app = Aplicacion::getInstance();
+				$conn = $app->conexionBD();
 									//Elimina de la tabla ciudad la fila seleccionada con el POST ($ciudad)
 									//Método implementado con DELETE ON CASCADE en el archivo "krysi.sql"
 									$select = sprintf("DELETE FROM city WHERE city_id = '%d'",
 									$conn->real_escape_string($ciudad));
-									$conn = $conn->query($select);			
+									$conn = $conn->query($select);	
+
+
 								}
 
 							}
