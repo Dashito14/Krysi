@@ -1,4 +1,7 @@
-﻿INSERT INTO country (name, n_cities) VALUES
+﻿
+/*Paises disponibles en los cuáles se podrá añadir aeropuertos dentro de nuestra web,
+dentro de la web se podrán agregar nuevos países*/
+INSERT INTO country (name, n_cities) VALUES
 ('Spain', 6), /*id= 1*/
 ('Austria', 1), /*id= 2*/
 ('Italy', 1), /*id= 3*/
@@ -13,8 +16,6 @@
 ('Bielorrusia', 1), /*id= 12*/
 ('Egypt', 1), /*id= 13*/
 ('Cuba', 1); /*id= 14*/
--- Paises disponibles en los cuáles se podrá añadir aeropuertos dentro de nuestra web,
--- dentro de la web se podrán agregar nuevos países
 
 
 /*Se han añadido algunos valores por defecto, más adelante en la web se podrán
@@ -53,10 +54,10 @@ INSERT INTO airport (city_id, acronym, name) VALUES
 (6, 'DXB', 'Aeropuerto Internacional de Dubái'),
 (7, 'BEG', 'Nikola Tesla'),
 (8, 'LGW', 'Aeropuerto Gatwick'),
-(9, 'JFK', 'John F. Kennedy'),   /*Este aeropuerto es de Nueva York (Aeropuerto J. F. Kennedy)*/
+(9, 'JFK', 'John F. Kennedy'), /*Este aeropuerto es de Nueva York (Aeropuerto J. F. Kennedy)*/
 (10, 'PRG', 'Václav Havel'),
 (11, 'AGP', 'Costa del Sol'),
-(9, 'LGA', 'Aeropuerto LaGuardia'),   /*Este aeropuerto también es de Nueva York (Aeropuerto LaGuardia)*/
+(9, 'LGA', 'Aeropuerto LaGuardia'), /*Este aeropuerto también es de Nueva York (Aeropuerto LaGuardia)*/
 (12, 'CDG' , 'Charles de Gaulle'),
 (13, 'BIO', 'Aeropuerto de Bilbao'),
 (14, 'LED', 'Púlkovo'),

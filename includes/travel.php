@@ -26,8 +26,5 @@ class Travel {
 									$conn->real_escape_string($id));
 		        $rs = $conn->query($query);
 		        return $rs;
-	    	}
-	
-   
-
+	} //Cierre función updateTravel
 }

@@ -21,24 +21,27 @@
 							$conn->real_escape_string($pais));
 			$conn = $conn->query($query);
 
-			$app = Aplicacion::getInstance();
-				$conn = $app->conexionBD();
-				$query = sprintf("SELECT * 
-									FROM country
-									WHERE country_id = '%d'",
-									$conn->real_escape_string($pais));
-				$rs = $conn->query($query);
-				$row = $rs->fetch_assoc();
-				$cities = $row['n_cities'];
-				$cities = $cities + 1;
-
-				echo $cities;
-				echo $pais;
-				
+			//Conexión con la base de datos
 			$app = Aplicacion::getInstance();
 			$conn = $app->conexionBD();
-			$query = sprintf("UPDATE country 
-								SET n_cities = '%d',
+			//Selecciona todos los elementos de la fila donde el id coincida con el del país de la
+			//ciudad que hemos eliminado. Tabla "country"
+			$query = sprintf("SELECT * 
+								FROM country
+								WHERE country_id = '%d'",
+						$conn->real_escape_string($pais));
+			$rs = $conn->query($query);
+			$row = $rs->fetch_assoc();
+			$cities = $row['n_cities'];
+			//Sumamos 1 a las ciudades del país antes de actualizar la tabla
+			$cities = $cities + 1;
+
+			//Conexión con la base de datos
+			$app = Aplicacion::getInstance();
+			$conn = $app->conexionBD();
+			//Actualiza el valos de "n_cities" de la tabla "country" para sumarle uno
+			$query = sprintf("UPDATE country
+								SET n_cities = '%d'
 								WHERE country_id = '%d'", 
 							$conn->real_escape_string($cities),
 							$conn->real_escape_string($pais));

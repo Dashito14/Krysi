@@ -37,6 +37,7 @@
 				?>	
 
 				<div class="main">
+					<!-- Título de la página -->
 					<h1>USUARIOS CON MÁS VIAJES</h1>
 						<p>En este ránking están ordenados los usuarios con más viajes comprados.</p>
 						<!-- Inicio de la tabla que mostrará los usuarios y el número de viajes -->

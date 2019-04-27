@@ -7,7 +7,7 @@
 	//Conexión base de datos
 	$app = Aplicacion::getInstance();
 	$conn = $app->conexionBD();
-	//Coge 10 elementos de la tabla "ticket" ordenado por la cantidad de billetes que tiene un usuario, de mayor a menor
+	//Coge 10 elementos de la tabla "available_trip" ordenado por la cantidad de viajes que tiene un aeropuerto, de mayor a menor
 	$query = sprintf("SELECT DISTINCT acr_ori, count(travel_id) as total
 						FROM available_trip 
 						GROUP BY acr_ori 
@@ -37,12 +37,14 @@
 				?>	
 
 				<div class="main">
+					<!-- Título de la página -->
 					<h1>AEROPUERTOS CON MÁS VIAJES</h1>
 						<p>En este ránking están ordenados los aeropuertos con más viajes disponibles.</p>
 						<!-- Inicio de la tabla que mostrará los usuarios y el número de viajes -->
 						<table>
 							<thead>
-								<tr>
+								<tr> 
+									<!-- Nombre de las columnas -->
 									<th>Aeropuerto</th>
 									<th>Número de viajes</th>
 								</tr>
@@ -50,28 +52,38 @@
 
 							<tbody>
 								<?php 
-									//Bucle que mostrará los 10 usuarios con más viajes
+									//Bucle que mostrará los 10 aeropuertos con más viajes
 									while($ranking = $rs->fetch_assoc()){
 								?>
-								<tr>
-									<?php
-										//Conexión con la base de datos
-										$app = Aplicacion::getInstance();
-										$conn = $app->conexionBD();
+										<tr>
+											<?php
+												//Conexión con la base de datos
+												$app = Aplicacion::getInstance();
+												$conn = $app->conexionBD();
 
-										//Selecciona el nombre del usuario
-										$select = sprintf("SELECT *
-														FROM airport
-														WHERE acronym = '%s'",
-													$conn->real_escape_string($ranking['acr_ori']));
-										$usuario = $conn->query($select);
-										$nombre = $usuario->fetch_assoc();
-									?>
-									<td align="center"><?php echo $nombre['name']; ?></td>
-									<td align="center"><?php echo $ranking['total']; ?></td>
-								</tr>
+												//Selecciona el nombre del aeropuerto
+												$select = sprintf("SELECT *
+																FROM airport
+																WHERE acronym = '%s'",
+															$conn->real_escape_string($ranking['acr_ori']));
+												$usuario = $conn->query($select);
+												$nombre = $usuario->fetch_assoc();
+											?>
+											<!-- Muestra el nombre del aeropuerto -->
+											<td align="center">
+												<?php 
+													echo $nombre['name'];
+												?>												 	
+											</td>
+											<!-- Muestra el número de viajes disponibles de cada aeropuerto -->
+											<td align="center">
+												<?php 
+													echo $ranking['total']; 
+												?>													
+											</td>
+										</tr>
 								<?php
-									} //Cierre del while
+									} //Cierre de while($ranking = $rs->fetch_assoc())
 								?>
 							</tbody>
 						</table> <!-- Fin de la tabla -->

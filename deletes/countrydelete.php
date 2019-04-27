@@ -57,6 +57,7 @@
 							<a>Elige el país que quieres eliminar: </a>
 							<select name="pais" id="">
 								<?php
+									//Conexión con la base de datos
 									$app = Aplicacion::getInstance();
 									$conn = $app->conexionBD();
 									//Coge todos los elementos de la tabla "country"

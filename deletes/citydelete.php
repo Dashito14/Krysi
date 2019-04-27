@@ -35,45 +35,53 @@
 				<div class="main">
 					<form class="insertar" action="<?php $_SERVER['PHP_SELF']; ?>" method="POST">
 						<?php
+							//Solo si hay algún valor en el POST entrará en el if
 							if(!empty($_POST)){
 								
 								$ciudad= $_POST['city'];
-
+								//Si no está vacia la variable $ciudad entra en el if
 								if(!empty($ciudad)){
+									//Conexión con la base de datos
 									$app = Aplicacion::getInstance();
-				$conn = $app->conexionBD();
-				$query = sprintf("SELECT * 
-									FROM country c 
-									JOIN city ci
-									WHERE c.country_id = ci.country_id
-									AND ci.city_id = '%d'",
-									$conn->real_escape_string($ciudad));
-				$rs = $conn->query($query);
-				$row = $rs->fetch_assoc();
-				$cities = $row['n_cities'];
-				$cities = $cities - 1;
-				$pais = $row['country_id'];
+									$conn = $app->conexionBD();
+									//Selecciona la fila de las tablas en la que el id de country sea
+									//igual entre llas y que el id de la ciudad sea igual al POST
+									$query = sprintf("SELECT * 
+														FROM country c 
+														JOIN city ci
+														WHERE c.country_id = ci.country_id
+														AND ci.city_id = '%d'",
+												$conn->real_escape_string($ciudad));
 
-							$app = Aplicacion::getInstance();
-			$conn = $app->conexionBD();
-			$query = sprintf("UPDATE country 
-								SET n_cities = '%d',
-								WHERE country_id = '%d'", 
-							$conn->real_escape_string($cities),
-							$conn->real_escape_string($pais));
-			$conn = $conn->query($query);		
-$app = Aplicacion::getInstance();
-				$conn = $app->conexionBD();
+									$rs = $conn->query($query);
+									$row = $rs->fetch_assoc();
+									$cities = $row['n_cities'];
+									//Restamos 1, en n_cities del país del que hemos borrado
+									$cities = $cities - 1;
+									$pais = $row['country_id'];
+
+									//Conexión con la base de datos
+									$app = Aplicacion::getInstance();
+									$conn = $app->conexionBD();
+									//Actualia los datos habiéndole restado 1 a n_cities
+									$query = sprintf("UPDATE country 
+														SET n_cities = '%d'
+														WHERE country_id = '%d'", 
+												$conn->real_escape_string($cities),
+												$conn->real_escape_string($pais));
+									$conn = $conn->query($query);
+
+									//Conexión con la base de datos	
+									$app = Aplicacion::getInstance();
+									$conn = $app->conexionBD();
 									//Elimina de la tabla ciudad la fila seleccionada con el POST ($ciudad)
 									//Método implementado con DELETE ON CASCADE en el archivo "krysi.sql"
-									$select = sprintf("DELETE FROM city WHERE city_id = '%d'",
-									$conn->real_escape_string($ciudad));
+									$select = sprintf("DELETE FROM city 
+														WHERE city_id = '%d'",
+												$conn->real_escape_string($ciudad));
 									$conn = $conn->query($select);	
-
-
-								}
-
-							}
+								} //Cierre if(!empty($ciudad))
+							} //Cierre if(!empty($_POST))
 						?>
 						<a>Elige el país que quieres eliminar: </a>
 						<select name="city" id="">
