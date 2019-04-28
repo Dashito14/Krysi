@@ -83,7 +83,7 @@
 								} //Cierre if(!empty($ciudad))
 							} //Cierre if(!empty($_POST))
 						?>
-						<a>Elige el país que quieres eliminar: </a>
+						<a>Elige la ciudad que quieres eliminar: </a>
 						<select name="city" id="">
 							<?php
 								$app = Aplicacion::getInstance();

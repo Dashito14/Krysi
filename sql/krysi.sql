@@ -36,7 +36,7 @@ CREATE TABLE country (
 
 
 
-/*Se añade la clave primaria "city_id"*/
+/*Se añade la clave primaria "country_id"*/
 ALTER TABLE country
   ADD PRIMARY KEY (country_id);
   
@@ -77,8 +77,7 @@ ALTER TABLE city
 
 
 /*Se añade el valor auto_increment a la variable city_id para que cree un nuevo id
-sin que el usuario tenga que agregarlo, el id empezará en 12 ya que hemos añadido
-por defecto 11 ciudades*/
+sin que el usuario tenga que agregarlo*/
 ALTER TABLE city
   MODIFY city_id int(32) NOT NULL AUTO_INCREMENT;
   
@@ -118,11 +117,6 @@ ALTER TABLE airport
 /*---------------------------------------------------------------------------*/
 
 
-/*Parte general de la relación "Is a", de ella derivan "pilot" y "normal_user",
-en ella guardamos el identificador, el nombre y la contraseña con la que el usuario,
-ya sea piloto o un usuario corriente, accederá a la web*/
-
-
 /*Creación de la tabla*/
 CREATE TABLE users (
 	user_id int(32) NOT NULL,
@@ -147,13 +141,6 @@ ALTER TABLE users
 /*---------------------------------------------------------------------------*/
 
 
-/*Esta tabla es una de las dos partes de la relación "Is a" derivadas de la tabla
-"users", dividos en Pilotos y usuarios corrientes, los pilotos tendrán más 
-privilegios dentro de la web. Además del identificador del usuario también tenemos
-que alamcenar la aerolínea a la cual pertenece cada piloto*/
-
-
-
 /*Creación de la tabla*/
 CREATE TABLE pilot (
 	user_id int(32) NOT NULL,
@@ -161,7 +148,7 @@ CREATE TABLE pilot (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-/*Adición índice para la clave foránea de "user_id"*/
+/*Adición índice para la clave foránea de "user_id" y "belongs_airline*/
 ALTER TABLE pilot
 	ADD KEY userid (user_id),
 	ADD KEY belongs (belongs_airline);
@@ -224,37 +211,25 @@ ALTER TABLE available_trip
 /*---------------------------------------------------------------------------*/
 
 
-/*Tabla con todos los billetes que se han gestionado a través de la web, se podrán
-comprar nuevos billetes, realizaremos un insert, se podrá pedir la devolución de un 
-billete, por lo que haremos un delete. En la tabla "ticket" necesitamos almacenar
-el identificador del usuario que lo ha comprado y el identificador 
-del billete*/
+/*Esta tabla esta creada porque entre "users" y "available_trip" tenemos uan relación 
+N a N. Por tanto debemos almacenar en una tabla aparte los datos del ava_trip_id y user_id*/
 
 
 /*Creación de la tabla*/
 CREATE TABLE ticket (
   user_id int(32) NOT NULL,
-  ava_trip_id int(32) NOT NULL,
-  ticket_id int(32) NOT NULL
+  ava_trip_id int(32) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-/*Se añaden los índices, se agrega "ticket_id" como clave primaria, además de las claves
-foráneas de "origin", "destiny" y "airline"*/
+/*Se añaden las claves foráneas available_trip y user_id*/
 ALTER TABLE ticket
-  ADD PRIMARY KEY (ticket_id),
   ADD KEY available_trip (ava_trip_id),
   ADD KEY userid (user_id);
 
 
-/*Se agrega el valor auto_increment al valor "ticket_id" para que cree un nuevo id sin que 
-el usuario tenga que añadirlo, no tiene valor inicial porque el primer ticket se comprará
-cuando la web esté en funcionamiento*/
-ALTER TABLE ticket
-  MODIFY ticket_id int(32) NOT NULL AUTO_INCREMENT;
-
-
-/*El campo "user_id" que referencia al del mismo nombre de la tabla "users"*/
+/*El campo "user_id" que referencia al del mismo nombre de la tabla "users" y "ava_trip_id"
+que referencia a "travel_id" de "available_trip"*/
 ALTER TABLE ticket
 	ADD CONSTRAINT ticket_ibfk_1 FOREIGN KEY (ava_trip_id) REFERENCES available_trip (travel_id) ON DELETE CASCADE,
 	ADD CONSTRAINT ticket_ibfk_2 FOREIGN KEY (user_id) REFERENCES users (user_id);

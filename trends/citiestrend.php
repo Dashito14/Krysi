@@ -7,12 +7,12 @@
 	//Conexión base de datos
 	$app = Aplicacion::getInstance();
 	$conn = $app->conexionBD();
-	//Coge 10 elementos de la tabla "airport" ordenado por la cantidad de aeropuertos que tiene una ciudad, de mayor a menor
+	//Coge 5 elementos de la tabla "airport" ordenado por la cantidad de aeropuertos que tiene una ciudad, de mayor a menor
 	$query = sprintf("SELECT DISTINCT city_id, count(acronym) as total
 						FROM airport 
 						GROUP BY city_id 
 						ORDER BY count(acronym) 
-						DESC LIMIT 10");
+						DESC LIMIT 5");
 	$rs = $conn->query($query);
 
 ?>

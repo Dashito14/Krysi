@@ -58,7 +58,7 @@
 					<?php
 						} //Cierre if($_SESSION['esPiloto'])
 						//Selecciona el id del usuario y la suma de todos los billetes comprados por él
-						$query = sprintf("SELECT user_id, count(ticket_id) as total
+						$query = sprintf("SELECT user_id, count(ava_trip_id) as total
 											FROM ticket 
 											WHERE user_id = '%d'
 											GROUP BY user_id",

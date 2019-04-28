@@ -8,10 +8,10 @@
 	$app = Aplicacion::getInstance();
 	$conn = $app->conexionBD();
 	//Coge 10 elementos de la tabla "ticket" ordenado por la cantidad de billetes que tiene un usuario, de mayor a menor
-	$query = sprintf("SELECT user_id, count(ticket_id) as total
+	$query = sprintf("SELECT user_id, count(ava_trip_id) as total
 						FROM ticket 
 						GROUP BY user_id 
-						ORDER BY count(ticket_id) 
+						ORDER BY count(ava_trip_id) 
 						DESC LIMIT 10");
 	$rs = $conn->query($query);
 

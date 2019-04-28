@@ -82,6 +82,7 @@ class formularioRegistro extends Form{
                 $_SESSION['login'] = true;
                 $_SESSION['nombre'] = $username;
                 $_SESSION['esPiloto'] = false;
+                $_SESSION['ID'] = $usuario->id();
                 //header('Location: index.php');
                 return "index.php";
             }

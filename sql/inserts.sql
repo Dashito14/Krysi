@@ -2,20 +2,22 @@
 /*Paises disponibles en los cuáles se podrá añadir aeropuertos dentro de nuestra web,
 dentro de la web se podrán agregar nuevos países*/
 INSERT INTO country (name, n_cities) VALUES
-('Spain', 6), /*id= 1*/
+('Spain', 8), /*id= 1*/
 ('Austria', 1), /*id= 2*/
-('Italy', 1), /*id= 3*/
+('Italy', 5), /*id= 3*/
 ('Arabe Emirates', 1), /*id= 4*/
 ('Serbia', 1), /*id= 5*/
-('United Kingdom', 1), /*id= 6*/
-('United States', 1), /*id= 7*/
+('United Kingdom', 3), /*id= 6*/
+('United States', 6), /*id= 7*/
 ('Czech Republic', 1), /*id= 8*/
-('France', 1), /*id= 9*/
-('Portugal', 0), /*id= 10*/
-('Rusia', 1), /*id= 11*/
+('France', 3), /*id= 9*/
+('Portugal', 3), /*id= 10*/
+('Russia', 2), /*id= 11*/
 ('Bielorrusia', 1), /*id= 12*/
-('Egypt', 1), /*id= 13*/
-('Cuba', 1); /*id= 14*/
+('Egypt', 2), /*id= 13*/
+('Cuba', 1), /*id = 14*/
+('Japan', 5), /*id= 15*/
+('Belgium', 1); /*id= 16*/
 
 
 /*Se han añadido algunos valores por defecto, más adelante en la web se podrán
@@ -38,7 +40,35 @@ INSERT INTO city (name, country_id) VALUES
 ('A Coruña', 1), /*id= 15*/
 ('Minsk', 12), /*id= 16*/
 ('Cairo', 13), /*id= 17*/
-('Guantanamo', 14); /*id= 18*/
+('Guantanamo', 14), /*id= 18*/
+('Tenerife', 1), /*id= 19*/
+('Ibiza', 1), /*id= 20*/
+('Las Vegas', 7), /*id= 21*/
+('Los Angeles', 7), /*id= 22*/
+('Philadelphia', 7), /*id= 23*/
+('Houston', 7), /*id= 24*/
+('Chicago', 7), /*id= 25*/
+('Napoli', 3), /*id= 26*/
+('Venice', 3), /*id= 27*/
+('Milan', 3), /*id= 28*/
+('Florence', 3), /*id= 29*/
+('Tokyo', 15), /*id= 30*/
+('Kyoto', 15), /*id= 31*/
+('Yokohama', 15), /*id= 32*/
+('Nagoya', 15), /*id= 33*/
+('Hiroshima', 15), /*id= 34*/
+('Marseille', 9), /*id= 35*/
+('Lyon', 9), /*id= 36*/
+('Liverpool', 6), /*id= 37*/
+('Manchester', 6), /*id= 38*/
+('Lisbon', 10), /*id= 39*/
+('Porto', 10), /*id= 40*/
+('Madeira', 10), /*id= 41*/
+('Luxor', 13), /*id= 42*/
+('Moscow', 11), /*id= 43*/
+('Brussels', 16); /*id= 44*/
+
+
 
 
 
@@ -64,6 +94,13 @@ INSERT INTO airport (city_id, acronym, name) VALUES
 (15, 'LCG', 'Aeropuerto de A Coruña'),
 (16, 'MSQ', 'Aeropuerto Internacional de Minsk'),
 (17, 'CAI', 'Aeropuerto Internacional de El Cairo'),
+(30, 'NRT', 'Aeropuerto Internacional de Narita'), /*Aeropeurto de Tokyo*/
+(30, 'HND', 'Aeropeurto Internacional de Haneda'), /*Aeropuerto de Tokyo*/
+(9, 'EWR', 'Libertad de Newark'), /*Aeropuerto de Nueva York*/
+(44, 'BRU', 'Zaventem'), /*Aeropuerto de Bruselas*/
+(44, 'CRL', 'Charleroi'), /*Aeropuerto de Bruselas*/
+(19, 'TFN', 'Tenerife Norte'), /*Aeropuerto de Tenerife*/
+(19, 'TFS', 'Aeropuerto Internacional Reina Sofia'), /*Aeropuerto de Tenerife*/
 (18, 'GAO', 'Mariana Grajales');  
 
 
